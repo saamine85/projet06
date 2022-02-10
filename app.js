@@ -4,8 +4,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-// create express to be exported to main file server
+// create express to be exported to main file server we import a node named path
+const path = require("path");
 
+// to have acces to our file systeme we call
 const app = express();
 
 // call our router user in our app express
@@ -54,11 +56,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// our app.js manage also all files in request we need to used it
+// we need to use a static file named images
+app.use("/images", express.static(path.join(__dirname, "images")));
 //save route user to be used by frontend developer
 app.use("/api/auth", userRoutes);
 // set endpoint sauce and router sauce to be used
 app.use("/api/sauces", sauceRoutes);
-
 
 // make it accessible from outside this file
 

@@ -1,9 +1,17 @@
 const Sauce = require("../models/sauces");
 
 exports.createSauce = (req, res, next) => {
-  delete req.body._id;
+  // after req of file ==> req.body.sauce after request is a string we need to parse it to objet
+  const sauceObject = JSON.parse(req.body.sauce);
+  delete sauceObject._id; //replace req.body with sauceObject we dont need to save an id because mdb generate an id ==> a revoir dans le cour
   const sauce = new Sauce({
-    ...req.body,
+    ...sauceObject,
+    // our mutler manage our file image and the front end didnt know wich url to use
+    // we can use req.file.filename from file system but he didn't know in production where is our image ==>
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
+    // imageUrl:"http or https"://3000 or another / images/ filename of the image
   });
   sauce
     .save()
@@ -12,12 +20,19 @@ exports.createSauce = (req, res, next) => {
 };
 
 exports.modifySauce = (req, res, next) => {
+  // check if the file exist or not ,if we have a file we give our string and parse it to object and we change imageUrl if not we take the body request
+  const sauceObject = req.file
+    ? {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
   Sauce.updateOne(
+    { _id: req.params.id },
     {
-      _id: req.params.id,
-    },
-    {
-      ...req.body,
+      ...sauceObject,
       _id: req.params.id,
     }
   )

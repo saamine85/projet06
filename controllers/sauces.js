@@ -1,4 +1,6 @@
 const Sauce = require("../models/sauces");
+// import file systeme to delete file in like our file images
+const fs = require("fs"); // systeme interne de node
 
 exports.createSauce = (req, res, next) => {
   // after req of file ==> req.body.sauce after request is a string we need to parse it to objet
@@ -15,7 +17,7 @@ exports.createSauce = (req, res, next) => {
   });
   sauce
     .save()
-    .then(() => res.status(201).json({ message: "Objet enregistré !" }))
+    .then(() => res.status(201).json({ message: "sauce enregistré !" }))
     .catch((error) => res.status(400).json({ error }));
 };
 
@@ -38,7 +40,7 @@ exports.modifySauce = (req, res, next) => {
   )
     .then(() =>
       res.status(200).json({
-        message: "Objet modifié !",
+        message: "sauce modifié !",
       })
     )
     .catch((error) =>
@@ -61,6 +63,25 @@ exports.getAllSauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
+  // before delete object from our database we need to know his URL
+  Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+    const filename = sauce.imageUrl.split("/images/")[1]; // url/images/namefile.jpg ==> we need the name of file to delete it
+    fs.unlink(`images/${filename}`, () => {
+      Sauce.deleteOne({ _id: req.params.id })
+        .then(() => {
+          //delete sauce
+          res.status(200).json({
+            message: "sauce supprimé!",
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
+        });
+    });
+  });
+
   // verif if the user whowant to do a request is the same user that we athentify with our database
   Sauce.findOne({ _id: req.params.id }).then((sauce) => {
     if (!sauce) {
@@ -74,17 +95,18 @@ exports.deleteSauce = (req, res, next) => {
       });
     }
     // after matching userid with our data base we can produce to response to request delete
-    Sauce.deleteOne({ _id: req.params.id })
-      .then(() => {
-        //delete sauce
-        res.status(200).json({
-          message: "Deleted!",
-        });
-      })
-      .catch((error) => {
-        res.status(400).json({
-          error: error,
-        });
-      });
+    // to delete it we move this one to our callaback fs.unlink
+    // Sauce.deleteOne({ _id: req.params.id })
+    //   .then(() => {
+    //     //delete sauce
+    //     res.status(200).json({
+    //       message: "sauce supprimé!",
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     res.status(400).json({
+    //       error: error,
+    //     });
+    //   });
   });
 };

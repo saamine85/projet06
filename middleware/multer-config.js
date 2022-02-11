@@ -1,4 +1,3 @@
-
 // middleware pour gerer les fichiers entrants
 
 // call multer plugin
@@ -34,4 +33,4 @@ const storage = multer.diskStorage({
 });
 
 // export middlware contain unique file called image with name path storage
-module.exports = multer({ storage: storage }).single("image");//({ storage: storage })==({ storage })
+module.exports = multer({ storage: storage }).single("image"); //({ storage: storage })==({ storage })

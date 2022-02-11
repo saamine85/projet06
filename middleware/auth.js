@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
     // give a request userid an userid for security ==> voir avec le mentor
     // req.userId = userId; or
 
-    req.auth = { userId: userId };// racourcis {userId}
+    req.auth = { userId: userId }; // racourcis {userId}
 
     //verify if the request userid match with the decodetoken userid
     if (req.body.userId && req.body.userId !== userId) {
@@ -28,11 +28,7 @@ module.exports = (req, res, next) => {
   }
 };
 
-
-
 // La méthode  verify()  du package jsonwebtoken permet de vérifier la validité d'un token (sur une requête entrante, par exemple).
 
 // Ajoutez bien votre middleware d'authentification dans le bon ordre sur les bonnes routes.
 // n.b: Attention aux failles de sécurité !
-
-

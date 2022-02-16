@@ -12,8 +12,8 @@
 // // });
 
 // // choose port to listen
-// server.listen(process.env.PORT || 3000);
 
+// server.listen(process.env.PORT || 3000);
 //improve our server file after installing express
 const http = require("http");
 const app = require("./app");

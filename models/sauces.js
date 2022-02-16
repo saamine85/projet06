@@ -5,14 +5,15 @@ const sauceSchema = mongoose.Schema({
   name: { type: String, required: true },
   manufacturer: { type: String, required: true },
   description: { type: String, required: true },
-  mainPeper: { type: String, required: true },
+  mainPepper: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  heat: { type: Number, required: true, max: 10, min: 1 },
-  likes: { type: Number, required: true },
-  dislikes: { type: Number, required: true },
-  usersLiked: { type: Array, required: true },
-  usersDisLiked: { type: Array, required: true },
+  heat: { type: Number, required: true },
+  // systeme like et dislike
+  // mettre un nombre par defaut egale a zero qui represente le debut
+  likes: { type: Number ,default:0},
+  dislikes: { type: Number ,default:0},
+  usersLiked: { type: Array },
+  usersDisLiked: { type: Array },
 });
 
 module.exports = mongoose.model("Sauce", sauceSchema);
-

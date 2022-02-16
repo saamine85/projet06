@@ -1,4 +1,4 @@
-// we need to install bcrypt (npm i --save bcrypt)
+  // we need to install bcrypt (npm i --save bcrypt)
 
 const bcrypt = require("bcrypt");
 

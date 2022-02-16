@@ -6,6 +6,9 @@ const router = express.Router();
 
 const sauceCtrl = require("../controllers/sauces");
 
+// import controller like.js
+const likeCtrl = require("../controllers/like");
+
 // protect ou route with auth middleware
 
 const auth = require("../middleware/auth");
@@ -22,5 +25,9 @@ router.put("/:id", auth, multer, sauceCtrl.modifySauce);
 router.delete("/:id", auth, sauceCtrl.deleteSauce);
 router.get("/:id", auth, sauceCtrl.getOneSauce);
 router.get("/", auth, sauceCtrl.getAllSauce);
+// systeme like dislike
+// need the id of object that we liked
+
+router.post("/:id/like", auth, likeCtrl.sauceLiked);
 
 module.exports = router;
